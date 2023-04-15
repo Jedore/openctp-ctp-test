@@ -47,6 +47,7 @@ jobs:
         run: ls -al /opt/hostedtoolcache/Python/3.7.16/x64/lib/python3.7/site-packages/openctp_ctp_6315
       - name: Test
         run: |
+          python -c "from openctp_ctp_6315 import mdapi, tdapi"
           pytest --ctp 6315 tests
       - name: Store Package
         uses: actions/upload-artifact@v3
