@@ -43,6 +43,8 @@ jobs:
         run: |
           pip install dist/*.whl
         shell: bash
+      - name: test
+        run: ls -al /opt/hostedtoolcache/Python/3.7.16/x64/lib/python3.7/site-packages/openctp_ctp_6315
       - name: Test
         run: |
           pytest --ctp 6315 tests
