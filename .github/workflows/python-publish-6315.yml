@@ -25,6 +25,8 @@ jobs:
         with:
           repository: Jedore/openctp-ctp-6315
           path: 'openctp-ctp-6315'
+      - name: test
+        run: ls -al openctp-ctp-6315
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
