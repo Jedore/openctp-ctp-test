@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ "3.7" ]
+        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
 
     steps:
       - uses: actions/checkout@v3
@@ -56,12 +56,10 @@ jobs:
 
 
   build-windows:
-    needs:
-      - build-linux
     runs-on: windows-latest
     strategy:
       matrix:
-        python-version: [ "3.7" ]
+        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
 
     steps:
       - name: Checkout openctp-ctp-python
@@ -99,6 +97,7 @@ jobs:
 
   publish-wheel:
     needs:
+      - build-linux
       - build-windows
     runs-on: ubuntu-latest
     steps:
@@ -126,7 +125,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ "3.7" ]
+        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
 
     steps:
       - name: Checkout openctp-ctp-python
@@ -153,11 +152,11 @@ jobs:
 
   test-windows:
     needs:
-      - test-linux
+      - publish-wheel
     runs-on: windows-latest
     strategy:
       matrix:
-        python-version: [ "3.7" ]
+        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
 
     steps:
       - name: Checkout openctp-ctp-python
