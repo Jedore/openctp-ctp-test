@@ -25,8 +25,6 @@ jobs:
         with:
           repository: Jedore/openctp-ctp-6315
           path: 'openctp-ctp-6315'
-      - name: test
-        run: ls -al openctp-ctp-6315
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
@@ -83,7 +81,7 @@ jobs:
         run: |
           pip install -r requirements.txt
       - name: Building Package
-        working-directory: ctp-6315
+        working-directory: openctp-ctp-6315
         run: hatch build -t wheel
       - name: Install Package
         run: |
