@@ -8,7 +8,14 @@
 
 name: Build & Publish 6315
 
-on: [ workflow_dispatch ]
+on:
+  workflow_dispatch:
+    inputs:
+      CTP:
+        required: true
+      SINGLE:
+        type: boolean
+        required:
 
 jobs:
 
