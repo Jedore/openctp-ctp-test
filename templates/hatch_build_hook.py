@@ -9,9 +9,9 @@ from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 class CustomBuildHook(BuildHookInterface):
     def initialize(self, version: str, build_data: Dict[str, Any]) -> None:
         cur_dir = os.getcwd()
-        ctp_version = cur_dir.split('-')[2]
+        ctp_version = os.path.basename(cur_dir).split('-')[2]
         libs_dir = os.path.join(cur_dir, 'libs')
-        target_dir = 'openctp-ctp-' + ctp_version
+        target_dir = 'openctp_ctp_' + ctp_version
 
         build_data['pure_python'] = False
         build_data['infer_tag'] = True
