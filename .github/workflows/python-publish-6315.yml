@@ -19,13 +19,12 @@ jobs:
         python-version: [ "3.7" ]
 
     steps:
-      - name: Checkout openctp-ctp-python
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       - name: Checkout openctp-ctp-6315
         uses: actions/checkout@v3
         with:
           repository: Jedore/openctp-ctp-6315
-          path: openctp-ctp-6315
+          path: 'openctp-ctp-6315'
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
