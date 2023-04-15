@@ -47,7 +47,7 @@ jobs:
         run: |
           ls -al /opt/hostedtoolcache/Python/3.7.16/x64/lib/python3.7/site-packages/openctp_ctp_6315
           cd /opt/hostedtoolcache/Python/3.7.16/x64/lib/python3.7/site-packages/openctp_ctp_6315
-      - run: python -c "import thostmduserapi"
+          python -c "import thostmduserapi"
       - run: python -c "from openctp_ctp_6315 import mdapi, tdapi"
       - name: Test
         run: |
