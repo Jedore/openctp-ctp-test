@@ -1,0 +1,6 @@
+[submodule "openctp-ctp-667"]
+	path = openctp-ctp-667
+	url = git@github.com:Jedore/openctp-ctp-667.git
+[submodule "openctp-ctp-6315"]
+	path = openctp-ctp-6315
+	url = git@github.com:Jedore/openctp-ctp-6315.git
