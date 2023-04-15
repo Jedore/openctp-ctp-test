@@ -19,18 +19,32 @@ jobs:
         python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python 3.7
+      - name: Checkout openctp-ctp-python
+        uses: actions/checkout@v3
+      - name: Checkout openctp-ctp-6315
+        uses: actions/checkout@v3
+        with:
+          repository: Jedore/openctp-ctp-6315
+          path: openctp-ctp-6315
+      - name: Set up Python
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Sync files
+        run: python templates/sync.py 6315
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Building Package
         working-directory: ctp-6315
         run: hatch build -t wheel
+      - name: Install Package
+        run: |
+          pip install dist/*.whl
+        shell: bash
+      - name: Test
+        run: |
+          pytest --ctp 6315 tests
       - name: Store Package
         uses: actions/upload-artifact@v3
         with:
@@ -47,18 +61,32 @@ jobs:
         python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Checkout openctp-ctp-python
+        uses: actions/checkout@v3
+      - name: Checkout openctp-ctp-6315
+        uses: actions/checkout@v3
+        with:
+          repository: Jedore/openctp-ctp-6315
+          path: openctp-ctp-6315
+      - name: Set up Python
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Sync files
+        run: python templates/sync.py 6315
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Building Package
         working-directory: ctp-6315
         run: hatch build -t wheel
+      - name: Install Package
+        run: |
+          pip install dist/*.whl
+        shell: bash
+                 - name: Test
+                 run: |
+                   pytest --ctp 6315 tests
       - name: Store Package
         uses: actions/upload-artifact@v3
         with:
@@ -77,7 +105,6 @@ jobs:
           python-version: 3.9
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install hatch
       - name: Download Package
         uses: actions/download-artifact@v3
@@ -88,3 +115,57 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
+          repository-url: https://test.pypi.org/legacy/
+
+  test-linux:
+    needs:
+      - publish-wheel
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
+
+    steps:
+      - name: Checkout openctp-ctp-python
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Install Package
+        run: |
+          pip install -i https://test.pypi.org/simple/ openctp-ctp-6315
+        shell: bash
+      - name: Test
+        run: |
+          pytest --ctp 6315 tests
+
+
+  test-windows:
+    needs:
+      - test-linux
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
+
+    steps:
+      - name: Checkout openctp-ctp-python
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Install Package
+        run: |
+          pip install -i https://test.pypi.org/simple/ openctp-ctp-6315
+        shell: bash
+      - name: Test
+        run: |
+          pytest --ctp 6315 tests

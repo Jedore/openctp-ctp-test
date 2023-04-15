@@ -10,10 +10,9 @@ import sys
 if __name__ == '__main__':
     try:
         ctp_version = sys.argv[1]
-        pkg_version = sys.argv[2]
     except IndexError:
         print('Execute in project root directory: \n'
-              '     python sync.py <ctp version> <pkg version>')
+              '     python sync.py <ctp version>')
         exit(-1)
 
     target_dir = os.path.join(os.getcwd(), f'openctp-ctp-{ctp_version}')
@@ -22,7 +21,7 @@ if __name__ == '__main__':
     print('Sync __about__.py')
     with open(os.path.join('templates', '__about__.py'), mode='r', encoding='utf8') as file_obj:
         text = file_obj.read()
-    new_text = text.replace('PKG_VERSION', pkg_version)
+    new_text = text.replace('PKG_VERSION', '3.0.0')
     with open(os.path.join(target_dir, 'libs', '__about__.py'), 'w') as file_obj:
         file_obj.write(new_text)
 
