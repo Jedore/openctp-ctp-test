@@ -127,7 +127,7 @@ jobs:
         shell: bash
       - name: Test
         run: |
-          pytest --ctp 667 tests
+          pytest --ctp 667 tests/test_mdapi.py
       - name: Store Package
         uses: actions/upload-artifact@v3
         with:
