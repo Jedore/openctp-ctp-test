@@ -84,9 +84,9 @@ jobs:
         run: |
           pip install dist/*.whl
         shell: bash
-                 - name: Test
-                 run: |
-                   pytest --ctp 6315 tests
+      - name: Test
+        run: |
+          pytest --ctp 6315 tests
       - name: Store Package
         uses: actions/upload-artifact@v3
         with:
