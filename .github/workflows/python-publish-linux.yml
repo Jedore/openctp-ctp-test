@@ -20,17 +20,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Checkout openctp-ctp
+      - name: Checkout openctp-ctp-${{ matrix.ctp-version }}
         uses: actions/checkout@v3
         with:
-          repository: Jedore/openctp-ctp-${{ ctp-version }}
-          path: 'openctp-ctp-6315'
+          repository: Jedore/openctp-ctp-${{ matrix.ctp-version }}
+          path: 'openctp-ctp-${{ matrix.ctp-version }}'
       - name: Set up Python
         uses: actions/setup-python@v3
 #        with:
 #          python-version: ${{ matrix.python-version }}
       - name: Sync files
-        run: python templates/sync.py ${{ ctp-version }}
+        run: python templates/sync.py ${{ matrix.ctp-version }}
 #      - name: Modify Ubuntu Locale
 #        run: |
 #          sudo apt-get install -y locales
@@ -39,7 +39,7 @@ jobs:
         run: |
           pip install -r requirements.txt
       - name: Building Package
-        working-directory: openctp-ctp-${{ ctp-version }}
+        working-directory: openctp-ctp-${{ matrix.ctp-version }}
 #        run: hatch build -t wheel
         run: python -m cibuildwheel --output-dir ../dist
 #      - name: Install Package
