@@ -14,23 +14,23 @@ jobs:
 
   build-linux:
     runs-on: ubuntu-latest
-#    strategy:
-#      matrix:
-#        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
+    strategy:
+      matrix:
+        ctp-version: [ "6315", "6319", "651", "661", "667", "669" ]
 
     steps:
       - uses: actions/checkout@v3
-      - name: Checkout openctp-ctp-6315
+      - name: Checkout openctp-ctp-${{ ctp-version }}
         uses: actions/checkout@v3
         with:
-          repository: Jedore/openctp-ctp-6315
+          repository: Jedore/openctp-ctp-${{ ctp-version }}
           path: 'openctp-ctp-6315'
       - name: Set up Python
         uses: actions/setup-python@v3
 #        with:
 #          python-version: ${{ matrix.python-version }}
       - name: Sync files
-        run: python templates/sync.py 6315
+        run: python templates/sync.py ${{ ctp-version }}
 #      - name: Modify Ubuntu Locale
 #        run: |
 #          sudo apt-get install -y locales
@@ -38,9 +38,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          python -m pip install cibuildwheel==2.12.1
       - name: Building Package
-        working-directory: openctp-ctp-6315
+        working-directory: openctp-ctp-${{ ctp-version }}
 #        run: hatch build -t wheel
         run: python -m cibuildwheel --output-dir ../dist
 #      - name: Install Package

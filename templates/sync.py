@@ -22,8 +22,10 @@ if __name__ == '__main__':
     def src_file(*filenames):
         return os.path.join('templates', *filenames)
 
+
     def test_file(*filenames):
         return os.path.join('tests', *filenames)
+
 
     def target_file(*filenames):
         return os.path.join(target_dir, *filenames)
@@ -32,7 +34,7 @@ if __name__ == '__main__':
     print('Sync __about__.py')
     with open(src_file('__about__.py'), 'r') as file_obj:
         text = file_obj.read()
-    new_text = text.replace('PKG_VERSION', '3.0.3')
+    new_text = text.replace('PKG_VERSION', '3.0.4')
     with open(target_file('libs', '__about__.py'), 'w') as file_obj:
         file_obj.write(new_text)
 
@@ -68,14 +70,14 @@ if __name__ == '__main__':
 
     print('Sync tests')
     os.mkdir(target_file('tests'))
-    with open(test_file('test_mdapi.py'), 'r') as file_obj:
+    with open(src_file('tests', 'test_mdapi.py'), 'r') as file_obj:
         text = file_obj.read()
     new_text = text.replace('CTP_VERSION2', version)
     new_text = new_text.replace('CTP_VERSION', ctp_version)
     with open(target_file('tests', 'test_mdapi.py'), 'w') as file_obj:
         file_obj.write(new_text)
 
-    with open(test_file('test_tdapi.py'), 'r') as file_obj:
+    with open(src_file('tests', 'test_tdapi.py'), 'r') as file_obj:
         text = file_obj.read()
     new_text = text.replace('CTP_VERSION2', version)
     new_text = new_text.replace('CTP_VERSION', ctp_version)
