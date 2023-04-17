@@ -83,7 +83,5 @@ path = "hatch_build_hook.py"
 
 [tool.cibuildwheel]
 skip = "pp* *-musllinux* *-manylinux_i686"
-
-[tool.cibuildwheel]
 test-requires = "pytest"
 test-command = "TEST"
