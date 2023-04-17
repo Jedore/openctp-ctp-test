@@ -21,7 +21,7 @@ if __name__ == '__main__':
     print('Sync __about__.py')
     with open(os.path.join('templates', '__about__.py'), 'r') as file_obj:
         text = file_obj.read()
-    new_text = text.replace('PKG_VERSION', '3.0.2')
+    new_text = text.replace('PKG_VERSION', '3.0.3')
     with open(os.path.join(target_dir, 'libs', '__about__.py'), 'w') as file_obj:
         file_obj.write(new_text)
 
