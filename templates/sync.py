@@ -45,4 +45,8 @@ if __name__ == '__main__':
         file_obj.write(new_text)
 
     print('Sync hook')
-    shutil.copyfile(os.path.join('templates', 'hatch_build_hook.py'), os.path.join(target_dir, 'hatch_build_hook.py'))
+    with open(os.path.join('templates', 'hatch_build_hook.py'), 'r') as file_obj:
+        text = file_obj.read()
+    new_text = text.replace('CTP_VERSION', ctp_version)
+    with open(os.path.join(target_dir, 'hatch_build_hook.py'), 'w') as file_obj:
+        file_obj.write(new_text)
