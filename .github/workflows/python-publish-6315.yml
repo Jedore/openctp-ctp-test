@@ -8,19 +8,12 @@
 
 name: Build & Publish 6315
 
-on:
-  workflow_dispatch:
-    inputs:
-      CTP:
-        required: true
-      SINGLE:
-        type: boolean
-        required:
+on: [ workflow_dispatch ]
 
 jobs:
 
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
@@ -63,7 +56,7 @@ jobs:
 
 
   build-windows:
-    runs-on: windows-latest
+    runs-on: windows-2019
     strategy:
       matrix:
         python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
