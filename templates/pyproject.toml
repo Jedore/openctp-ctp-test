@@ -80,3 +80,7 @@ exclude = [
 
 [tool.hatch.build.targets.wheel.hooks.custom]
 path = "hatch_build_hook.py"
+
+[tool.cibuildwheel]
+test-requires = "pytest"
+test-command = "TEST"
