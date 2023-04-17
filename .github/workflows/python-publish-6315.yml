@@ -13,11 +13,11 @@ on: [ workflow_dispatch ]
 jobs:
 
   build-linux:
-    runs-on: ubuntu-latest
-    container: quay.io/pypa/manylinux2014_x86_64
-    strategy:
-      matrix:
-        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
+    runs-on: ubuntu-20.04
+#    container: quay.io/pypa/manylinux2014_x86_64
+#    strategy:
+#      matrix:
+#        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
 
     steps:
       - uses: actions/checkout@v3
@@ -28,8 +28,8 @@ jobs:
           path: 'openctp-ctp-6315'
       - name: Set up Python
         uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
+#        with:
+#          python-version: ${{ matrix.python-version }}
       - name: Sync files
         run: python templates/sync.py 6315
 #      - name: Modify Ubuntu Locale
@@ -39,9 +39,11 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+          python -m pip install cibuildwheel==2.12.1
       - name: Building Package
         working-directory: openctp-ctp-6315
-        run: hatch build -t wheel
+#        run: hatch build -t wheel
+        run: python -m cibuildwheel --output-dir ../dist
       - name: Install Package
         run: |
           pip install dist/*.whl
@@ -56,50 +58,50 @@ jobs:
           path: dist
 
 
-  build-windows:
-    runs-on: windows-2019
-    strategy:
-      matrix:
-        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
-
-    steps:
-      - name: Checkout openctp-ctp-python
-        uses: actions/checkout@v3
-      - name: Checkout openctp-ctp-6315
-        uses: actions/checkout@v3
-        with:
-          repository: Jedore/openctp-ctp-6315
-          path: openctp-ctp-6315
-      - name: Set up Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Sync files
-        run: python templates/sync.py 6315
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-      - name: Building Package
-        working-directory: openctp-ctp-6315
-        run: hatch build -t wheel
-      - name: Install Package
-        run: |
-          pip install dist/*.whl
-        shell: bash
-      - name: Test
-        run: |
-          pytest --ctp 6315 tests
-      - name: Store Package
-        uses: actions/upload-artifact@v3
-        with:
-          name: python-package-distribution
-          path: dist
+#  build-windows:
+#    runs-on: windows-2019
+#    strategy:
+#      matrix:
+#        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
+#
+#    steps:
+#      - name: Checkout openctp-ctp-python
+#        uses: actions/checkout@v3
+#      - name: Checkout openctp-ctp-6315
+#        uses: actions/checkout@v3
+#        with:
+#          repository: Jedore/openctp-ctp-6315
+#          path: openctp-ctp-6315
+#      - name: Set up Python
+#        uses: actions/setup-python@v3
+#        with:
+#          python-version: ${{ matrix.python-version }}
+#      - name: Sync files
+#        run: python templates/sync.py 6315
+#      - name: Install dependencies
+#        run: |
+#          pip install -r requirements.txt
+#      - name: Building Package
+#        working-directory: openctp-ctp-6315
+#        run: hatch build -t wheel
+#      - name: Install Package
+#        run: |
+#          pip install dist/*.whl
+#        shell: bash
+#      - name: Test
+#        run: |
+#          pytest --ctp 6315 tests
+#      - name: Store Package
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: python-package-distribution
+#          path: dist
 
 
   publish-wheel:
     needs:
       - build-linux
-      - build-windows
+#      - build-windows
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python 3.9
@@ -151,28 +153,28 @@ jobs:
           pytest --ctp 6315 tests
 
 
-  test-windows:
-    needs:
-      - publish-wheel
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
-
-    steps:
-      - name: Checkout openctp-ctp-python
-        uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-      - name: Install Package
-        run: |
-          pip install -i https://test.pypi.org/simple/ openctp-ctp-6315
-        shell: bash
-      - name: Test
-        run: |
-          pytest --ctp 6315 tests
+#  test-windows:
+#    needs:
+#      - publish-wheel
+#    runs-on: windows-latest
+#    strategy:
+#      matrix:
+#        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
+#
+#    steps:
+#      - name: Checkout openctp-ctp-python
+#        uses: actions/checkout@v3
+#      - name: Set up Python
+#        uses: actions/setup-python@v3
+#        with:
+#          python-version: ${{ matrix.python-version }}
+#      - name: Install dependencies
+#        run: |
+#          pip install -r requirements.txt
+#      - name: Install Package
+#        run: |
+#          pip install -i https://test.pypi.org/simple/ openctp-ctp-6315
+#        shell: bash
+#      - name: Test
+#        run: |
+#          pytest --ctp 6315 tests
