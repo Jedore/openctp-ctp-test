@@ -41,7 +41,9 @@ jobs:
       - name: Building Package
         working-directory: openctp-ctp-${{ matrix.ctp-version }}
 #        run: hatch build -t wheel
-        run: python -m cibuildwheel --output-dir ../dist
+        run: |
+          export CIBW_REPAIR_WHEEL_COMMAND=
+          python -m cibuildwheel --platform linux --config-file pyproject.toml --output-dir ../dist
 #      - name: Install Package
 #        run: |
 #          pip install dist/*.whl
